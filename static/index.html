@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#091423">
+  <title>SquadBalance | Configurar elenco</title>
+  <link rel="icon" type="image/png" href="/static/assets/racha-da-misericordia.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark"><span>RM</span><img src="/static/assets/racha-da-misericordia.png" alt="Racha da Misericórdia"></div>
+        <div><strong>Racha da <span>Misericordia</span></strong><small>Elite Division</small></div>
+      </div>
+      <nav class="nav-list" aria-label="Navegação principal">
+        <button class="nav-item active" data-section="Time"><span>♧</span> Cadastro</button>
+        <button class="nav-item" data-section="manual"><span>♟</span> Montagem manual</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <button class="generate-side" id="generateSide">♟ &nbsp; Montagem manual</button>
+        <button class="nav-item"><span>?</span> Ajuda</button>
+        <button class="nav-item"><span>↪</span> Sair</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="mobile-brand"><div class="brand-mark"><span>RM</span><img src="/static/assets/racha-da-misericordia.png" alt="Racha da Misericórdia"></div><strong>Racha da <span>Misericórdia</span></strong></div>
+        <div class="status-pill"><i></i> Distribuição <b>100% manual</b></div>
+      </header>
+
+      <section class="page-heading club-cover">
+        <div>
+          <p class="eyebrow">CONFIGURAÇÃO DO ELENCO</p>
+          <h1>Monte seu <em>Time</em></h1>
+          <p class="subtitle">Cadastre capitães e jogadores para criar times equilibrados por nível.</p>
+        </div>
+        <div class="cover-logo"><span>RM</span><img src="/static/assets/racha-da-misericordia.png" alt="Racha da Misericórdia"></div><div class="header-stats"><strong>5</strong><span>times<br>na rodada</span></div>
+      </section>
+
+      <section id="Time" class="content-section active-section">
+        <div class="section-toolbar"><div><span class="section-icon captain-icon">★</span><h2>Capitães</h2><small>Defina os líderes da rodada</small></div><b class="counter">5 obrigatórios</b></div>
+        <div class="captains-grid" id="captainsGrid"></div>
+
+        <div class="section-toolbar roster-toolbar"><div><span class="section-icon">♟</span><h2>Pool de jogadores</h2><small>Adicione até 25 jogadores e sua avaliação</small></div><div class="toolbar-right"><b class="counter"><span id="playerCount">0</span> / 25</b><button class="small-action" id="fillExample">Preencher exemplo</button></div></div>
+        <div class="players-grid" id="playersGrid"></div>
+        <div class="action-row"><span id="formMessage" role="status"></span><div class="action-buttons"><button class="primary-action" id="generateButton">♟ &nbsp; Ir para montagem manual</button><button class="secondary-action manual-action" id="automaticButton">✦ &nbsp; Sortear times automaticamente</button></div></div>
+      </section>
+
+      <section id="manual" class="content-section manual-section">
+        <div class="page-heading compact"><div><p class="eyebrow">MONTAGEM MANUAL</p><h1>Monte os <em>times</em></h1><p class="subtitle">Escolha cada jogador e envie-o para o time que você desejar. Nenhuma distribuição é feita automaticamente.</p></div><button class="secondary-action" id="backToRoster">← Editar cadastro</button></div>
+        <div class="manual-layout">
+          <aside class="available-panel"><div class="manual-panel-title"><div><span class="section-icon">♟</span><h2>Jogadores disponíveis</h2></div><b id="availableCount" class="counter">0 disponíveis</b></div><p class="manual-hint" id="manualHint">Selecione um jogador e escolha um time.</p><div id="availablePlayers" class="available-players"></div></aside>
+          <div class="manual-teams-wrap"><div class="manual-panel-title"><div><span class="section-icon captain-icon">★</span><h2>Times da rodada</h2></div><b class="counter">capitães fixos</b></div><div id="manualTeams" class="manual-teams"></div><div id="manualStatus" class="manual-status"></div></div>
+        </div>
+      </section>
+
+      <section id="results" class="content-section results-section">
+        <div class="page-heading compact"><div><p class="eyebrow">RESULTADO DA RODADA</p><h1>Times <em>equilibrados</em></h1><p class="subtitle">Distribuição calculada pelo nível total de cada equipe.</p></div><button class="secondary-action" id="backToRoster">← Editar roster</button></div>
+        <p class="manual-edit-help">✦ Edição manual: clique em um jogador e depois em outro jogador de outro time para trocar os dois. Capitães ficam fixos.</p>
+        <div id="teamsGrid" class="teams-grid"></div>
+      </section>
+
+      <footer><span>© 2026 SquadBalance PRO Analytics</span><span>Privacidade &nbsp; Termos de serviço &nbsp; Suporte</span></footer>
+    </main>
+  </div>
+  <script src="/static/app.js"></script>
+</body>
+</html>
