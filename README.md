@@ -1,5 +1,7 @@
 # Racha da Misericórdia
 
+https://sorteiodetimerachamisericordia.netlify.app/
+
 Aplicação web local para organizar uma rodada de futebol entre cinco times. O sistema permite cadastrar capitães e jogadores, definir o nível de cada participante e escolher entre uma montagem manual ou uma distribuição automática equilibrada.
 
 ## Funcionalidades
