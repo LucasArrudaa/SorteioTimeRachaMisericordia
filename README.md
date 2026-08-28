@@ -1,104 +1,223 @@
 # Racha da Misericórdia
 
-Aplicação web local para organizar uma rodada de futebol entre cinco times. O sistema permite cadastrar capitães e jogadores, definir o nível de cada participante e escolher entre uma montagem manual ou uma distribuição automática equilibrada.
+Aplicação web para montar cinco times de futebol a partir dos capitães, dos jogadores e dos níveis de cada participante.
 
-## Funcionalidades
+O sistema oferece duas formas de montagem:
 
-- Cadastro de cinco capitães e exatamente 25 jogadores.
-- Avaliação de capitães e jogadores em uma escala de 1 a 5 estrelas.
-- Preenchimento de exemplo para testar a interface rapidamente.
-- Montagem manual dos cinco times, com capitães fixos.
-- Organização dos jogadores disponíveis por nível.
-- Sorteio automático priorizando o equilíbrio da pontuação total das equipes.
-- Troca de jogadores entre times no resultado automático.
-- Layout responsivo para computador e celular.
-- Funcionamento local sem banco de dados, framework ou dependências externas.
+- **Manual:** você escolhe para qual time cada jogador vai.
+- **Automática:** o sistema distribui os jogadores tentando equilibrar a pontuação total dos times.
 
-## Tecnologias
+## O que o projeto faz
 
-- HTML5
-- CSS3
-- JavaScript puro
-- Python 3, usando `http.server` da biblioteca padrão
+- Cadastra 5 capitães e exatamente 25 jogadores.
+- Atribui um nível de 1 a 5 estrelas para cada pessoa.
+- Mostra os jogadores disponíveis agrupados por nível.
+- Mantém os capitães fixos em seus times.
+- Permite trocar jogadores depois do sorteio automático.
+- Funciona no computador e no celular.
+- Não exige banco de dados, Node.js ou instalação de pacotes Python.
 
-## Como acessar
+## Como executar
 
-### Pelo Live Server
+### Opção 1: servidor Python
 
-Com a extensão **Live Server** do VS Code instalada, abra `static/index.html` e clique em **Go Live**. O endereço normalmente será:
+Pré-requisito: Python 3.8 ou superior.
 
-[http://127.0.0.1:5500/static/index.html](http://127.0.0.1:5500/static/index.html)
-
-### Pelo servidor Python
-
-O projeto também inclui um servidor local simples. No terminal, dentro da pasta do projeto, execute:
+Abra o terminal na pasta do projeto e execute:
 
 ```bash
 python main.py
 ```
 
-Depois, acesse:
+Depois, abra no navegador:
 
-[http://127.0.0.1:8000](http://127.0.0.1:8000)
+```text
+http://127.0.0.1:8000
+```
 
-Para encerrar o servidor, pressione `Ctrl + C` no terminal.
+Para parar o servidor, pressione `Ctrl + C` no terminal.
+
+### Opção 2: Live Server
+
+Com a extensão **Live Server** do VS Code:
+
+1. Abra `static/index.html`.
+2. Clique em **Go Live**.
+3. Acesse o endereço exibido pelo VS Code, normalmente `http://127.0.0.1:5500/static/index.html`.
+
+O servidor Python é mais fiel à estrutura final do projeto, mas as duas opções funcionam para testar a interface.
 
 ## Como usar
 
-1. Preencha os nomes dos cinco capitães.
-2. Adicione os 25 jogadores e defina o nível de cada um pelas estrelas.
-3. Escolha uma das opções:
-   - **Montagem manual:** selecione um jogador disponível e adicione-o ao time desejado. Cada equipe aceita até cinco jogadores além do capitão.
-   - **Sorteio automático:** gere cinco equipes com os capitães fixos e jogadores distribuídos por pontuação.
-4. Na tela do resultado automático, clique em dois jogadores de equipes diferentes para trocar os dois. Capitães não podem ser trocados.
+1. Informe os nomes dos cinco capitães.
+2. Informe os nomes dos 25 jogadores.
+3. Escolha o nível de cada participante clicando nas estrelas.
+4. Escolha uma das opções de montagem:
+   - **Ir para montagem manual:** selecione um jogador disponível e clique em **Adicionar jogador aqui** no time desejado.
+   - **Sortear times automaticamente:** gere uma sugestão equilibrada com base nos níveis cadastrados.
+5. Na montagem manual, use o botão `x` de um jogador para devolvê-lo à lista de disponíveis.
+6. No resultado automático, clique em dois jogadores de times diferentes para trocar os dois.
 
-O botão **Preencher exemplo** insere um elenco completo para demonstração. O sistema exige todos os cinco capitães e exatamente 25 jogadores antes de montar as equipes.
+O botão **Preencher exemplo** cria um elenco completo para testar rapidamente a aplicação.
 
-## Como funciona o equilíbrio automático
+### Regras da rodada
 
-Os capitães começam fixos em seus respectivos times. Em seguida, os jogadores são ordenados do maior para o menor nível e enviados, um por vez, para a equipe com menor pontuação que ainda tenha espaço. O resultado é uma sugestão baseada somente nos níveis cadastrados; posição em campo, entrosamento e características individuais não são considerados.
+- São 5 times.
+- Cada time possui 1 capitão e até 5 jogadores.
+- Os capitães não podem ser trocados no resultado automático.
+- É obrigatório preencher os 5 capitães.
+- É obrigatório preencher exatamente 25 jogadores.
+- Os dados são apagados quando a página é atualizada.
 
-## Regras e limitações
+## Como o código funciona
 
-- A rodada é formada por cinco times de seis pessoas: um capitão e cinco jogadores.
-- Os dados ficam apenas na memória do navegador enquanto a página está aberta.
-- Atualizar a página apaga o cadastro e os times montados.
-- Não há login, persistência, banco de dados ou backend de aplicação.
-- O projeto foi pensado para uso local e não inclui publicação automática em hospedagem.
+O projeto separa a aplicação em três partes clássicas:
 
-## Estrutura do projeto
+```text
+HTML       estrutura da página
+CSS        aparência e responsividade
+JavaScript comportamento e regras da montagem
+```
+
+Não é usado nenhum framework frontend. A interface usa JavaScript puro e as APIs nativas do navegador.
+
+### Estado da aplicação
+
+Em `static/app.js`, o objeto `state` guarda os dados digitados:
+
+```javascript
+const state = {
+  captains: [],
+  players: []
+};
+```
+
+Cada capitão ou jogador possui um nome e um rating. Outras variáveis guardam os times gerados, o jogador selecionado e a montagem manual atual.
+
+Esse estado existe apenas na memória do navegador. Não há `localStorage`, API ou banco de dados.
+
+### Renderização da interface
+
+As funções `renderCaptains`, `renderPlayers`, `renderManual` e `renderTeams` transformam o estado em HTML usando template strings e `innerHTML`.
+
+O fluxo é:
+
+1. O usuário altera um campo ou clica em uma estrela.
+2. Um evento atualiza o estado.
+3. A função de renderização desenha novamente a parte afetada da interface.
+
+As classes CSS, como `active-section`, `selected-available` e `selected-player`, representam os estados visuais da aplicação.
+
+### Validação
+
+A função `validate()` usa `trim()`, `some()` e `filter()` para verificar:
+
+- se algum capitão está sem nome;
+- quantos jogadores foram preenchidos;
+- se a quantidade é exatamente 25.
+
+Se houver erro, a montagem não começa e uma mensagem é exibida na tela.
+
+### Montagem manual
+
+Na função `setupManual()`, cada capitão recebe um time vazio. A função `renderManual()` cria:
+
+- a lista de jogadores disponíveis;
+- os grupos por nível;
+- os cinco times;
+- os botões para adicionar e remover jogadores.
+
+O campo `sourceIndex` preserva a posição original de cada jogador. Um `Set`, criado em `assignedPlayerIndexes()`, impede que um jogador já distribuído apareça novamente entre os disponíveis.
+
+### Montagem automática
+
+A função usada pelo botão de sorteio é `makeBalancedTeams()`:
+
+1. Cria cinco times e coloca um capitão em cada um.
+2. Ordena os jogadores do maior para o menor nível.
+3. Procura o time com menor pontuação que ainda tenha espaço.
+4. Adiciona o jogador nesse time.
+5. Atualiza a pontuação e repete o processo.
+
+Esse é um algoritmo guloso: a melhor escolha disponível é feita a cada passo. Ele é simples e rápido, mas não garante a combinação matematicamente perfeita em todos os casos.
+
+O equilíbrio considera somente a soma dos níveis. Não considera posição, estilo de jogo, entrosamento ou preferências dos jogadores.
+
+### Troca de jogadores
+
+A função `selectOrSwapPlayer()` controla as trocas no resultado automático:
+
+- o primeiro clique seleciona um jogador;
+- o segundo clique em outro time troca os dois jogadores;
+- clicar novamente no mesmo jogador cancela a seleção.
+
+Depois da troca, `updateTeamScores()` recalcula a pontuação de cada equipe com `reduce()`.
+
+### Segurança nos nomes
+
+Como os cartões são montados com `innerHTML`, a função `escapeHtml()` transforma caracteres especiais em entidades HTML. Isso impede que um nome digitado seja interpretado como código HTML.
+
+## Estrutura dos arquivos
 
 ```text
 RoboSorteioTimes/
-├── main.py                       # Servidor HTTP local opcional
-├── README.md                     # Documentação do projeto
+├── main.py
+├── netlify.toml
+├── README.md
 └── static/
-    ├── index.html                # Estrutura da interface
-    ├── styles.css                # Estilos e responsividade
-    ├── app.js                    # Estado, validações e regras dos times
+    ├── index.html
+    ├── app.js
+    ├── styles.css
     └── assets/
         └── racha-da-misericordia.png
 ```
 
-## Requisitos
+### `main.py`
 
-- Navegador moderno.
-- Python 3.8 ou superior, apenas se optar por usar `main.py`.
-- Não é necessário instalar pacotes com `pip` ou usar Node.js.
+Servidor HTTP local feito com `http.server`, módulo incluído na biblioteca padrão do Python. Ele entrega os arquivos estáticos e abre `static/index.html` quando a raiz do site é acessada.
 
-## Publicar no GitHub
+### `static/index.html`
 
-Crie um repositório no GitHub e execute os comandos abaixo na pasta do projeto, substituindo a URL pelo endereço do seu repositório:
+Define a estrutura da página, os campos, os botões, a navegação e as áreas onde o JavaScript insere os cartões.
 
-```bash
-git init
-git add .
-git commit -m "feat: cria organizador de times"
-git branch -M main
-git remote add origin https://github.com/SEU-USUARIO/SEU-REPOSITORIO.git
-git push -u origin main
+### `static/app.js`
+
+Controla o estado, os eventos, a validação, as estrelas, a montagem manual e o algoritmo automático.
+
+### `static/styles.css`
+
+Define o tema visual, o layout com Flexbox e CSS Grid, os estados dos componentes e os ajustes para telas menores com media queries.
+
+### `static/assets/`
+
+Guarda a imagem usada na identidade visual da aplicação.
+
+### `netlify.toml`
+
+Indica que a pasta publicada em uma hospedagem estática é `static`:
+
+```toml
+[build]
+publish = "static"
 ```
 
-## Licença
+## Tecnologias e bibliotecas
 
-Este projeto ainda não possui uma licença definida. Para distribuí-lo formalmente, adicione um arquivo `LICENSE` com a licença escolhida.
+- **HTML5:** estrutura semântica da página.
+- **CSS3:** layout, cores, tipografia e responsividade.
+- **JavaScript ES6+:** lógica, eventos, arrays, template strings e manipulação do DOM.
+- **Python 3:** servidor local.
+- **`http.server`:** servidor HTTP da biblioteca padrão do Python.
+- **Google Fonts:** fontes Manrope e DM Mono.
+- **Netlify:** configuração opcional para publicar os arquivos estáticos.
+
+Não é necessário executar `pip install`, `npm install` ou configurar um banco de dados.
+
+## Limitações atuais
+
+- Os dados não são salvos permanentemente.
+- Atualizar ou fechar a página apaga o cadastro.
+- O equilíbrio automático usa somente os ratings.
+- Não há login ou múltiplos usuários.
+- O servidor Python é apenas para desenvolvimento local.
+- O projeto não possui uma licença definida.
