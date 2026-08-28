@@ -1,6 +1,12 @@
 # Racha da Misericórdia
 
+<<<<<<< HEAD
 Aplicação web para montar cinco times de futebol a partir dos capitães, dos jogadores e dos níveis de cada participante.
+=======
+https://sorteiodetimerachamisericordia.netlify.app/
+
+Aplicação web local para organizar uma rodada de futebol entre cinco times. O sistema permite cadastrar capitães e jogadores, definir o nível de cada participante e escolher entre uma montagem manual ou uma distribuição automática equilibrada.
+>>>>>>> 56ab56508514275abbf6bbe6f5dd07de2ce43eef
 
 O sistema oferece duas formas de montagem:
 
@@ -203,6 +209,7 @@ publish = "static"
 
 ## Tecnologias e bibliotecas
 
+<<<<<<< HEAD
 - **HTML5:** estrutura semântica da página.
 - **CSS3:** layout, cores, tipografia e responsividade.
 - **JavaScript ES6+:** lógica, eventos, arrays, template strings e manipulação do DOM.
@@ -221,3 +228,6 @@ Não é necessário executar `pip install`, `npm install` ou configurar um banco
 - Não há login ou múltiplos usuários.
 - O servidor Python é apenas para desenvolvimento local.
 - O projeto não possui uma licença definida.
+=======
+Este projeto ainda não possui uma licença definida. Para distribuí-lo formalmente, adicione um arquivo `LICENSE` com a licença escolhida.
+>>>>>>> 56ab56508514275abbf6bbe6f5dd07de2ce43eef
